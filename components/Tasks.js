@@ -4,18 +4,21 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
+  ScrollView,
   Text,
 } from 'react-native';
 
 const Tasks = props => {
-  const {text, completedTask, index} = props;
+  const {text, completedTask, index, editTask} = props;
 
   return (
     <>
       <View style={styles.item}>
         <View style={styles.itemLeft}>
           <TouchableOpacity style={styles.circle} />
-          <Text style={styles.itemText}>{text}</Text>
+          <TouchableOpacity onPress={() => editTask(index)}>
+            <Text style={styles.itemText}>{text}</Text>
+          </TouchableOpacity>
         </View>
 
         <TouchableOpacity onPress={() => completedTask(index)}>

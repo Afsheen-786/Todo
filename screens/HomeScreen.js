@@ -8,6 +8,8 @@ import {
   SafeAreaView,
   TextInput,
   Platform,
+  Keyboard,
+  ScrollView,
   KeyboardAvoidingView,
 } from 'react-native';
 import Tasks from '../components/Tasks';
@@ -17,24 +19,31 @@ const Home = () => {
   const [taskItems, setTaskItems] = useState([]);
 
   const handleTask = () => {
+    Keyboard.dismiss();
     setTaskItems([...taskItems, task]);
     setTask(null);
   };
 
   const completedTask = index => {
-    // console.log(index);
     let itemsCopy = [...taskItems];
     itemsCopy.splice(index, 1);
     setTaskItems(itemsCopy);
   };
   // console.log(completedTask);
 
+  const editTask = index => {
+    let itemsEdit = [...taskItems];
+    itemsEdit.splice(index, 1, task);
+    setTaskItems(itemsEdit);
+  };
+  console.log(editTask);
+
   return (
     <>
       <View style={styles.container}>
         <Text style={styles.text}>TODO :</Text>
 
-        <View style={styles.items}>
+        <ScrollView style={styles.items}>
           {taskItems.map((item, index) => {
             return (
               <Tasks
@@ -42,12 +51,13 @@ const Home = () => {
                 text={item}
                 index={index}
                 completedTask={completedTask}
+                editTask={editTask}
               />
             );
           })}
           {/* <Tasks text="Task 1" /> */}
           {/* <Tasks text="Task 2" /> */}
-        </View>
+        </ScrollView>
 
         {/* Button */}
         <KeyboardAvoidingView style={styles.inputContainer}>

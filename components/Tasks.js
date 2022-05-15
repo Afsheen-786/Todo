@@ -12,22 +12,18 @@ const Tasks = props => {
   const {text, completedTask, index, editTask} = props;
 
   return (
-    <>
-      <View style={styles.item}>
-        <View style={styles.itemLeft}>
-          <TouchableOpacity style={styles.circle} />
-          <TouchableOpacity onPress={() => editTask(index)}>
-            <Text style={styles.itemText}>{text}</Text>
-          </TouchableOpacity>
-        </View>
-
-        <TouchableOpacity onPress={() => completedTask(index)}>
-          <Text style={styles.remove}>REMOVE</Text>
+    <View style={styles.item}>
+      <View style={styles.itemLeft}>
+        <TouchableOpacity style={styles.circle} />
+        <TouchableOpacity onPress={() => editTask(index)}>
+          <Text style={styles.itemText}>{text}</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Button */}
-    </>
+      <TouchableOpacity onPress={() => completedTask(index)}>
+        <Text style={styles.remove}>REMOVE</Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 
@@ -50,6 +46,7 @@ const styles = StyleSheet.create({
   itemText: {
     marginLeft: 16,
     maxWidth: '80%',
+    color: '#000',
   },
   circle: {
     width: 24,

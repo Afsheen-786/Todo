@@ -1,14 +1,12 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 
-const Auth = () => {
+const Auth = ({onLogin}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Set Authentication to Proceed :</Text>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => console.log('pressed')}>
+      <TouchableOpacity style={styles.button} onPress={onLogin}>
         <Text style={styles.buttonText}>Go to Settings</Text>
       </TouchableOpacity>
     </View>
@@ -26,6 +24,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     position: 'absolute',
     bottom: 0,
+    color: '#000',
   },
   button: {
     position: 'absolute',

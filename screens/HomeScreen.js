@@ -5,9 +5,7 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  SafeAreaView,
   TextInput,
-  Platform,
   Keyboard,
   ScrollView,
   KeyboardAvoidingView,
@@ -16,73 +14,78 @@ import Tasks from '../components/Tasks';
 
 const Home = () => {
   const [task, setTask] = useState('');
+  const [index, setIndex] = useState(null);
+  const [update, setUpdate] = useState(false);
   const [taskItems, setTaskItems] = useState([]);
 
   const handleTask = () => {
     Keyboard.dismiss();
-    setTaskItems([...taskItems, task]);
+    if (update) {
+      const copyItems = taskItems;
+      copyItems[index] = task;
+      setTaskItems([...copyItems]);
+      setUpdate(!update);
+    } else {
+      setTaskItems([...taskItems, task]);
+    }
     setTask(null);
   };
 
-  const completedTask = index => {
+  const completedTask = _index => {
     let itemsCopy = [...taskItems];
-    itemsCopy.splice(index, 1);
+    itemsCopy.splice(_index, 1);
     setTaskItems(itemsCopy);
   };
-  // console.log(completedTask);
 
-  const editTask = index => {
+  const editTask = _index => {
     let itemsEdit = [...taskItems];
-    itemsEdit.splice(index, 1, task);
-    setTaskItems(itemsEdit);
+    setIndex(index => _index);
+    setTask(itemsEdit[_index]);
+    setUpdate(!update);
   };
-  console.log(editTask);
 
   return (
-    <>
-      <View style={styles.container}>
-        <Text style={styles.text}>TODO :</Text>
+    <View style={styles.container}>
+      <Text style={styles.text}>TODO :</Text>
 
-        <ScrollView style={styles.items}>
-          {taskItems.map((item, index) => {
-            return (
-              <Tasks
-                key={index}
-                text={item}
-                index={index}
-                completedTask={completedTask}
-                editTask={editTask}
-              />
-            );
-          })}
-          {/* <Tasks text="Task 1" /> */}
-          {/* <Tasks text="Task 2" /> */}
-        </ScrollView>
+      <ScrollView style={styles.items}>
+        {taskItems.map((item, index) => {
+          return (
+            <Tasks
+              key={index}
+              text={item}
+              index={index}
+              completedTask={completedTask}
+              editTask={editTask}
+            />
+          );
+        })}
+      </ScrollView>
 
-        {/* Button */}
-        <KeyboardAvoidingView style={styles.inputContainer}>
-          <TextInput
-            placeholder="Enter Here"
-            style={styles.input}
-            value={task}
-            onChangeText={text => setTask(text)}
-          />
-          <TouchableOpacity
-            style={{marginLeft: '50%'}}
-            onPress={() => handleTask()}>
-            <View style={styles.addContainer}>
-              <Text style={styles.addText}>ADD</Text>
-            </View>
-          </TouchableOpacity>
-        </KeyboardAvoidingView>
-      </View>
-    </>
+      <KeyboardAvoidingView style={styles.inputContainer}>
+        <TextInput
+          placeholder="Please enter your task"
+          style={styles.input}
+          value={task}
+          onChangeText={text => setTask(text)}
+          placeholderTextColor={'grey'}
+        />
+        <TouchableOpacity
+          style={{marginLeft: '50%'}}
+          onPress={() => handleTask()}>
+          <View style={styles.addContainer}>
+            <Text style={styles.addText}>{update ? 'UPDATE' : 'ADD'}</Text>
+          </View>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginHorizontal: 16,
   },
   text: {
     color: '#253DA1',
@@ -106,8 +109,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   input: {
-    marginLeft: 10,
-    fontSize: 18,
+    paddingLeft: 30,
+    color: '#000',
   },
   addContainer: {
     padding: 16,
